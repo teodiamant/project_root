@@ -14,7 +14,7 @@ using namespace std;
 
 typedef Exact_predicates_inexact_constructions_kernel K;
 typedef Exact_predicates_tag Itag;
-typedef Constrained_Delaunay_triangulation_2<K, CGAL::Default, Itag> CDT;
+typedef Constrained_Delaunay_triangulation_2<K> CDT;
 typedef CDT::Point Point;
 typedef CDT::Edge Edge;
 

@@ -1,13 +1,29 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Constrained_Delaunay_triangulation_2.h>
 #include <string>
 #include <vector>
 #include <iostream>
 
 using namespace std;
+using namespace CGAL;
+
+// Define the Kernel and CDT type
+typedef Exact_predicates_inexact_constructions_kernel K;
+typedef Constrained_Delaunay_triangulation_2<K> CDT;
+typedef CDT::Point Point;
 
 class InputData {
+private:
+    string instance_uid_;
+    int num_points_;
+    vector<int> points_x_;
+    vector<int> points_y_;
+    vector<int> region_boundary_;
+    int num_constraints_;
+    vector<vector<int>> additional_constraints_;
 public:
     // Setters
     void setInstanceUid(const string& uid) { instance_uid_ = uid; }
@@ -60,17 +76,10 @@ public:
             }
         }
     }
-
-private:
-    string instance_uid_;
-    int num_points_;
-    vector<int> points_x_;
-    vector<int> points_y_;
-    vector<int> region_boundary_;
-    int num_constraints_;
-    vector<vector<int>> additional_constraints_;
 };
 
+// Declaration of additional utility functions
 InputData readJsonFile(const string& filename);
+int countObtuseAngles(const CDT& cdt);
 
 #endif // UTILS_HPP

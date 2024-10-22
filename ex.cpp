@@ -11,7 +11,7 @@ using namespace CGAL;
 using namespace std;
 
 typedef Exact_predicates_inexact_constructions_kernel K;
-typedef Constrained_Delaunay_triangulation_2<K, CGAL::Default, Itag> CDT;
+typedef Constrained_Delaunay_triangulation_2<K> CDT;
 typedef CDT::Point Point;
 
 int main() {
@@ -19,12 +19,13 @@ int main() {
     string filename = "instance_data.json";
     InputData instance_data = readJsonFile(filename);
 
-    // Display the loaded data
-    instance_data.display();
+//  // Display the loaded data
+    //instance_data.display();
 
     // Initialize Constrained Delaunay Triangulation
     CDT cdt;
 
+    //////////////////// Insert Instance ////////////////////
     // Insert points
     for (size_t i = 0; i < instance_data.getPointsX().size(); ++i) {
         cdt.insert(Point(instance_data.getPointsX()[i], instance_data.getPointsY()[i]));
@@ -47,8 +48,17 @@ int main() {
         }
     }
 
+    //check how many obtuse angles are in the initial polygon
+    int initialObtuseCount = countObtuseAngles(cdt);
+    cout << "Initial number of obtuse angles: " << initialObtuseCount << endl;
+    
+
+    //////////////////// Improve Triangulation using Edge Flips ////////////////////
+    
+
+
     // Draw the constrained Delaunay triangulation
     draw(cdt);
 
     return 0;
-}
+};

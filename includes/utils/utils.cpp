@@ -2,8 +2,14 @@
 #include <fstream>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Constrained_Delaunay_triangulation_2.h>
+
+#include <iostream>
 
 using namespace boost::property_tree;
+using namespace std;
+using namespace CGAL;
 
 InputData readJsonFile(const string& filename) {
     InputData inputData;
@@ -57,3 +63,29 @@ InputData readJsonFile(const string& filename) {
 
     return inputData;
 }
+
+int countObtuseAngles(const CDT& cdt) {
+    int obtuse_count = 0;
+
+    // Iterate over all finite faces (triangles) in the CDT
+    for (auto face_iter = cdt.finite_faces_begin(); face_iter != cdt.finite_faces_end(); ++face_iter) {
+        // Get the three vertices of the triangle
+        Point p1 = face_iter->vertex(0)->point();
+        Point p2 = face_iter->vertex(1)->point();
+        Point p3 = face_iter->vertex(2)->point();
+
+        // Calculate the three angles of the triangle using CGAL::angle
+        if (CGAL::angle(p2, p1, p3) == CGAL::OBTUSE) {
+            ++obtuse_count;
+        }
+        if (CGAL::angle(p1, p2, p3) == CGAL::OBTUSE) {
+            ++obtuse_count;
+        }
+        if (CGAL::angle(p1, p3, p2) == CGAL::OBTUSE) {
+            ++obtuse_count;
+        }
+    }
+
+    return obtuse_count;
+}
+
