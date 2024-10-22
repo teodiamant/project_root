@@ -1,9 +1,18 @@
 #include "utils.hpp"
 #include "graphics.hpp"
 
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Constrained_Delaunay_triangulation_2.h>
+#include <CGAL/draw_constrained_triangulation_2.h>
+
 #include <iostream>
 
+using namespace CGAL;
 using namespace std;
+
+typedef Exact_predicates_inexact_constructions_kernel K;
+typedef Constrained_Delaunay_triangulation_2<K, CGAL::Default, Itag> CDT;
+typedef CDT::Point Point;
 
 int main() {
     // Load the instance data from JSON file
@@ -11,36 +20,35 @@ int main() {
     InputData instance_data = readJsonFile(filename);
 
     // Display the loaded data
-    cout << "Instance UID: " << instance_data.getInstanceUid() << endl;
-    cout << "Number of points: " << instance_data.getNumPoints() << endl;
-    cout << "Points X: ";
-    for (const auto& x : instance_data.getPointsX()) {
-        cout << x << " ";
+    instance_data.display();
+
+    // Initialize Constrained Delaunay Triangulation
+    CDT cdt;
+
+    // Insert points
+    for (size_t i = 0; i < instance_data.getPointsX().size(); ++i) {
+        cdt.insert(Point(instance_data.getPointsX()[i], instance_data.getPointsY()[i]));
     }
-    cout << endl;
 
-    cout << "Points Y: ";
-    for (const auto& y : instance_data.getPointsY()) {
-        cout << y << " ";
+    // Insert constraints from region boundary
+    const auto& region_boundary = instance_data.getRegionBoundary();
+    for (size_t i = 0; i < region_boundary.size(); ++i) {
+        int idx1 = region_boundary[i];
+        int idx2 = region_boundary[(i + 1) % region_boundary.size()];
+        cdt.insert_constraint(Point(instance_data.getPointsX()[idx1], instance_data.getPointsY()[idx1]),
+                              Point(instance_data.getPointsX()[idx2], instance_data.getPointsY()[idx2]));
     }
-    cout << endl;
 
-    cout << "Region Boundary: ";
-    for (const auto& boundary : instance_data.getRegionBoundary()) {
-        cout << boundary << " ";
-    }
-    cout << endl;
-
-    cout << "Number of constraints: " << instance_data.getNumConstraints() << endl;
-
-    cout << "Additional Constraints: " << endl;
+    // Insert additional constraints
     for (const auto& constraint : instance_data.getAdditionalConstraints()) {
-        cout << "(" << constraint.first << ", " << constraint.second << ")" << endl;
+        if (constraint.size() == 2) {
+            cdt.insert_constraint(Point(instance_data.getPointsX()[constraint[0]], instance_data.getPointsY()[constraint[0]]),
+                                  Point(instance_data.getPointsX()[constraint[1]], instance_data.getPointsY()[constraint[1]]));
+        }
     }
 
-    // Draw the triangulation using the loaded data
-    Graphics graphics(instance_data);
-    graphics.drawTriangulation();
+    // Draw the constrained Delaunay triangulation
+    draw(cdt);
 
     return 0;
 }

@@ -3,38 +3,74 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
+
 using namespace std;
 
 class InputData {
-private:
-    string instance_uid;
-    int num_points;
-    vector<int> points_x;
-    vector<int> points_y;
-    vector<int> region_boundary;
-    int num_constraints;
-    vector<pair<int, int>> additional_constraints;
 public:
-    // Getters
-    string getInstanceUid() const { return instance_uid; }
-    int getNumPoints() const { return num_points; }
-    const vector<int>& getPointsX() const { return points_x; }
-    const vector<int>& getPointsY() const { return points_y; }
-    const vector<int>& getRegionBoundary() const { return region_boundary; }
-    int getNumConstraints() const { return num_constraints; }
-    const vector<pair<int, int>>& getAdditionalConstraints() const { return additional_constraints; }
-
     // Setters
-    void setInstanceUid(const string& uid) { instance_uid = uid; }
-    void setNumPoints(int points) { num_points = points; }
-    void setPointsX(const vector<int>& points) { points_x = points; }
-    void setPointsY(const vector<int>& points) { points_y = points; }
-    void setRegionBoundary(const vector<int>& boundary) { region_boundary = boundary; }
-    void setNumConstraints(int constraints) { num_constraints = constraints; }
-    void setAdditionalConstraints(const vector<pair<int, int>>& constraints) { additional_constraints = constraints;} 
+    void setInstanceUid(const string& uid) { instance_uid_ = uid; }
+    void setNumPoints(int num_points) { num_points_ = num_points; }
+    void setPointsX(const vector<int>& points_x) { points_x_ = points_x; }
+    void setPointsY(const vector<int>& points_y) { points_y_ = points_y; }
+    void setRegionBoundary(const vector<int>& region_boundary) { region_boundary_ = region_boundary; }
+    void setNumConstraints(int num_constraints) { num_constraints_ = num_constraints; }
+    void setAdditionalConstraints(const vector<vector<int>>& constraints) { additional_constraints_ = constraints; }
+
+    // Getters
+    string getInstanceUid() const { return instance_uid_; }
+    int getNumPoints() const { return num_points_; }
+    const vector<int>& getPointsX() const { return points_x_; }
+    const vector<int>& getPointsY() const { return points_y_; }
+    const vector<int>& getRegionBoundary() const { return region_boundary_; }
+    int getNumConstraints() const { return num_constraints_; }
+    const vector<vector<int>>& getAdditionalConstraints() const { return additional_constraints_; }
+
+    // Display function
+    void display() const {
+        cout << "Instance UID: " << instance_uid_ << endl;
+        cout << "Number of points: " << num_points_ << endl;
+        cout << "Points X: ";
+        for (const auto& x : points_x_) {
+            cout << x << " ";
+        }
+        cout << endl;
+
+        cout << "Points Y: ";
+        for (const auto& y : points_y_) {
+            cout << y << " ";
+        }
+        cout << endl;
+
+        cout << "Region Boundary: ";
+        for (const auto& boundary : region_boundary_) {
+            cout << boundary << " ";
+        }
+        cout << endl;
+
+        cout << "Number of constraints: " << num_constraints_ << endl;
+
+        cout << "Additional Constraints: " << endl;
+        for (const auto& constraint : additional_constraints_) {
+            if (constraint.size() == 2) {
+                cout << "(" << constraint[0] << ", " << constraint[1] << ")" << endl;
+            } else {
+                cerr << "Error: Constraint does not have exactly 2 elements." << endl;
+            }
+        }
+    }
+
+private:
+    string instance_uid_;
+    int num_points_;
+    vector<int> points_x_;
+    vector<int> points_y_;
+    vector<int> region_boundary_;
+    int num_constraints_;
+    vector<vector<int>> additional_constraints_;
 };
 
-// Function to read JSON file and parse the data
 InputData readJsonFile(const string& filename);
 
 #endif // UTILS_HPP
