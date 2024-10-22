@@ -81,5 +81,8 @@ public:
 // Declaration of additional utility functions
 InputData readJsonFile(const string& filename);
 int countObtuseAngles(const CDT& cdt);
+void performEdgeFlips(CDT& cdt);
+bool shouldFlip(CDT::Face_handle face, int edge_index, const CDT& cdt);
+void performEdgeFlips(CDT& cdt);
 
 #endif // UTILS_HPP

@@ -89,3 +89,69 @@ int countObtuseAngles(const CDT& cdt) {
     return obtuse_count;
 }
 
+bool shouldFlip(CDT::Face_handle face, int edge_index, const CDT& cdt) {
+    // Check if the edge is flipable
+    if (!cdt.is_flipable(face, edge_index)) {
+        //cout << "Edge at index " << edge_index << " is not flipable." << endl;
+        return false;
+    }
+
+    // Get the neighboring face that shares the edge
+    CDT::Face_handle opposite_face = face->neighbor(edge_index);
+
+    // Ensure the neighboring face is valid (not infinite)
+    if (cdt.is_infinite(opposite_face)) {
+        //cout << "Neighboring face is infinite for edge " << edge_index << "." << endl;
+        return false;
+    }
+
+    // Get the vertices involved in the shared edge and opposite vertices
+    Point p1 = face->vertex((edge_index + 1) % 3)->point();
+    Point p2 = face->vertex((edge_index + 2) % 3)->point();
+    Point p3 = face->vertex(edge_index)->point(); // Opposite vertex in face1
+    Point p4 = opposite_face->vertex(opposite_face->index(face))->point(); // Opposite vertex in face2
+
+    // Check if p4 lies inside the circumcircle of the triangle (p1, p2, p3)
+    auto side = CGAL::side_of_bounded_circle(p1, p2, p3, p4);
+    if (side == CGAL::ON_BOUNDED_SIDE) {
+        // If p4 lies inside the circumcircle, flipping will improve the triangulation
+        //cout << "Edge at index " << edge_index << " should be flipped to improve Delaunay condition." << endl;
+        return true;
+    } else {
+        //cout << "Edge at index " << edge_index << " does not need to be flipped." << endl;
+    }
+
+    return false;
+}
+
+void performEdgeFlips(CDT& cdt) {
+    bool flipped = true;
+
+    // Continue flipping edges as long as we are able to make improvements
+    while (flipped) {
+        flipped = false;
+
+        // Iterate over all finite edges in the CDT
+        for (auto edge_iter = cdt.finite_edges_begin(); edge_iter != cdt.finite_edges_end(); ++edge_iter) {
+            CDT::Edge edge = *edge_iter;
+            CDT::Face_handle face = edge.first;
+            int edge_index = edge.second;
+
+            // Skip constrained edges (such as region boundaries or user-defined constraints)
+            if (cdt.is_constrained(edge)) {
+                //cout << "Skipping constrained edge at index " << edge_index << endl;
+                continue;
+            }
+
+            // Check if the edge should be flipped (is flipable and improves triangulation quality)
+            if (shouldFlip(face, edge_index, cdt)) {
+                // Perform the edge flip
+                //cout << "Flipping edge at index " << edge_index << endl;
+                cdt.flip(face, edge_index);
+                flipped = true; // Mark that at least one edge was flipped in this iteration
+            }
+        }
+    }
+}
+
+

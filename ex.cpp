@@ -53,7 +53,10 @@ int main() {
     cout << "Initial number of obtuse angles: " << initialObtuseCount << endl;
     
     //////////////////// Improve Triangulation using Edge Flips ////////////////////
-    
+    performEdgeFlips(cdt);
+
+    int afterEdgeFlipsObtuseCount = countObtuseAngles(cdt);
+    cout << "Number of obtuse angles after Edge Flips: " << afterEdgeFlipsObtuseCount << endl;
 
 
     // Draw the constrained Delaunay triangulation
