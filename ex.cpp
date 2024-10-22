@@ -52,7 +52,6 @@ int main() {
     int initialObtuseCount = countObtuseAngles(cdt);
     cout << "Initial number of obtuse angles: " << initialObtuseCount << endl;
     
-
     //////////////////// Improve Triangulation using Edge Flips ////////////////////
     
 
