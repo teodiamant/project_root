@@ -1,45 +1,55 @@
 #include "utils.hpp"
+#include <fstream>
+#include <iostream>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
-#include <fstream>
 
+using namespace std;
 using namespace boost::property_tree;
 
-std::vector<Point> read_points_from_json(const std::string& filename) {
+InputData readJsonFile(const string& filename) {
+    InputData inputData;
+
+    // Create a property tree and parse the JSON file
     ptree pt;
-    read_json(filename, pt);
-
-    std::vector<Point> points;
-    auto x = pt.get_child("points_x");
-    auto y = pt.get_child("points_y");
-    for (auto it_x = x.begin(), it_y = y.begin(); it_x != x.end() && it_y != y.end(); ++it_x, ++it_y) {
-        points.push_back(Point(it_x->second.get_value<double>(), it_y->second.get_value<double>()));
+    try {
+        read_json(filename, pt);
+    } catch (const json_parser_error& e) {
+        cerr << "Error reading JSON file: " << e.what() << endl;
+        return inputData;
     }
 
-    return points;
-}
+    // Extract data from property tree
+    inputData.setInstanceUid(pt.get<string>("instance_uid", ""));
+    inputData.setNumPoints(pt.get<int>("num_points", 0));
 
-void save_solution_to_json(const std::string& filename, const std::vector<std::pair<int, int>>& edges, const std::vector<Point>& steiner_points) {
-    ptree pt;
-    pt.put("content_type", "CG_SHOP_2025_Solution");
-
-    ptree edges_node;
-    for (const auto& edge : edges) {
-        ptree edge_node;
-        edge_node.push_back(ptree::value_type("", std::to_string(edge.first)));
-        edge_node.push_back(ptree::value_type("", std::to_string(edge.second)));
-        edges_node.push_back(ptree::value_type("", edge_node));
+    vector<int> points_x;
+    for (const auto& item : pt.get_child("points_x")) {
+        points_x.push_back(item.second.get_value<int>());
     }
-    pt.add_child("edges", edges_node);
+    inputData.setPointsX(points_x);
 
-    ptree steiner_x, steiner_y;
-    for (const auto& point : steiner_points) {
-        steiner_x.push_back(ptree::value_type("", std::to_string(point.x())));
-        steiner_y.push_back(ptree::value_type("", std::to_string(point.y())));
+    vector<int> points_y;
+    for (const auto& item : pt.get_child("points_y")) {
+        points_y.push_back(item.second.get_value<int>());
     }
+    inputData.setPointsY(points_y);
 
-    pt.add_child("steiner_points_x", steiner_x);
-    pt.add_child("steiner_points_y", steiner_y);
+    vector<int> region_boundary;
+    for (const auto& item : pt.get_child("region_boundary")) {
+        region_boundary.push_back(item.second.get_value<int>());
+    }
+    inputData.setRegionBoundary(region_boundary);
 
-    write_json(filename, pt);
+    inputData.setNumConstraints(pt.get<int>("num_constraints", 0));
+
+    vector<pair<int, int>> additional_constraints;
+    for (const auto& constraint : pt.get_child("additional_constraints")) {
+        int first = constraint.second.get_child("0").get_value<int>();
+        int second = constraint.second.get_child("1").get_value<int>();
+        additional_constraints.emplace_back(first, second);
+    }
+    inputData.setAdditionalConstraints(additional_constraints);
+
+    return inputData;
 }

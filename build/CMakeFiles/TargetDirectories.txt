@@ -1,0 +1,11 @@
+/home/teodiamant/project_root/build/CMakeFiles/CGAL_Qt5_moc_and_resources.dir
+/home/teodiamant/project_root/build/CMakeFiles/project_root.dir
+/home/teodiamant/project_root/build/CMakeFiles/edit_cache.dir
+/home/teodiamant/project_root/build/CMakeFiles/rebuild_cache.dir
+/home/teodiamant/project_root/build/CMakeFiles/CGAL_Qt5_moc_and_resources_autogen.dir
+/home/teodiamant/project_root/build/includes/utils/CMakeFiles/utils.dir
+/home/teodiamant/project_root/build/includes/utils/CMakeFiles/edit_cache.dir
+/home/teodiamant/project_root/build/includes/utils/CMakeFiles/rebuild_cache.dir
+/home/teodiamant/project_root/build/includes/graphics/CMakeFiles/graphics.dir
+/home/teodiamant/project_root/build/includes/graphics/CMakeFiles/edit_cache.dir
+/home/teodiamant/project_root/build/includes/graphics/CMakeFiles/rebuild_cache.dir

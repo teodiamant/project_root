@@ -1,26 +1,32 @@
 #include "graphics.hpp"
 
-TriangulationViewer::TriangulationViewer(std::vector<Point> points, std::vector<std::pair<int, int>> edges)
-    : points(std::move(points)), edges(std::move(edges)) {}
+Graphics::Graphics(const InputData& instance_data) : instance_data_(instance_data) {}
 
-void TriangulationViewer::paintEvent(QPaintEvent *event) {
-    QPainter painter(this);
-    draw(painter);  
-}
+void Graphics::drawTriangulation() {
+    // Initialize Constrained Delaunay Triangulation
+    CDT cdt;
 
-void TriangulationViewer::draw(QPainter &painter) {
-    for (const auto& edge : edges) {
-        auto p1 = points[edge.first];
-        auto p2 = points[edge.second];
+    cout << "Inserting a grid of " << instance_data_.getPointsX().size() << "x" << instance_data_.getPointsY().size() << " constraints " << endl;
 
-        painter.drawLine(QPointF(p1.x(), p1.y()), QPointF(p2.x(), p2.y()));
+    // Create vertical constraints
+    for (const auto& x : instance_data_.getPointsX()) {
+        cdt.insert_constraint(Point(x, 0), Point(x, instance_data_.getPointsY().size())); // Use the size of Y for the end point
     }
-}
 
-void display_triangulation(int argc, char *argv[], const std::vector<Point>& points, const std::vector<std::pair<int, int>>& edges) {
-    QApplication app(argc, argv);
-    TriangulationViewer viewer(points, edges);
-    viewer.resize(800, 600);  
-    viewer.show();
-    app.exec();  
+    // Create horizontal constraints
+    for (const auto& y : instance_data_.getPointsY()) {
+        cdt.insert_constraint(Point(0, y), Point(instance_data_.getPointsX().size(), y)); // Use the size of X for the end point
+    }
+
+    assert(cdt.is_valid());
+
+    int count = 0;
+    for (const Edge& e : cdt.finite_edges()) {
+        if (cdt.is_constrained(e)) {
+            ++count;
+        }
+    }
+
+    cout << "The number of resulting constrained edges is " << count << endl;
+    CGAL::draw(cdt);
 }

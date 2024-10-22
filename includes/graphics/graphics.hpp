@@ -1,25 +1,30 @@
 #ifndef GRAPHICS_HPP
 #define GRAPHICS_HPP
 
-#include <vector>
-#include <CGAL/draw_constrained_triangulation_2.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Constrained_Delaunay_triangulation_2.h>
+#include <CGAL/draw_constrained_triangulation_2.h>
+#include "utils.hpp"
 
-typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-typedef K::Point_2 Point;
+#include <cassert>
+#include <iostream>
 
-class TriangulationViewer : public QWidget {
-    std::vector<std::pair<int, int>> edges;
-    std::vector<Point> points;
+using namespace CGAL;
+using namespace std;
 
+typedef Exact_predicates_inexact_constructions_kernel K;
+typedef Exact_predicates_tag Itag;
+typedef Constrained_Delaunay_triangulation_2<K, CGAL::Default, Itag> CDT;
+typedef CDT::Point Point;
+typedef CDT::Edge Edge;
+
+class Graphics {
 public:
-    TriangulationViewer(std::vector<Point> points, std::vector<std::pair<int, int>> edges);
-    
-    void draw(QPainter &painter);
+    Graphics(const InputData& instance_data);
+    void drawTriangulation();
 
-    void paintEvent(QPaintEvent *event) override;
+private:
+    const InputData& instance_data_;
 };
 
-void display_triangulation(int argc, char *argv[], const std::vector<Point>& points, const std::vector<std::pair<int, int>>& edges);
-
-#endif
+#endif // GRAPHICS_HPP
