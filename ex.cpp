@@ -2,16 +2,17 @@
 #include "graphics.hpp"
 
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
-#include <CGAL/Constrained_Delaunay_triangulation_2.h>
+#include "custom.hpp"
+//#include <CGAL/Constrained_Delaunay_triangulation_2.h>
 #include <CGAL/draw_constrained_triangulation_2.h>
 
 #include <iostream>
 
-using namespace CGAL;
 using namespace std;
 
-typedef Exact_predicates_inexact_constructions_kernel K;
-typedef Constrained_Delaunay_triangulation_2<K> CDT;
+typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+typedef CGAL::Exact_predicates_tag Itag;
+typedef Custom_Constrained_Delaunay_triangulation_2<K, CGAL::Default, Itag> CDT;
 typedef CDT::Point Point;
 
 int main() {
