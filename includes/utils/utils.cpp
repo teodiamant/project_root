@@ -11,6 +11,7 @@ using namespace boost::property_tree;
 using namespace std;
 using namespace CGAL;
 
+
 InputData readJsonFile(const string& filename) {
     InputData inputData;
 
@@ -154,4 +155,92 @@ void performEdgeFlips(CDT& cdt) {
     }
 }
 
+bool obtuseFace(CDT::Face_handle face, const CDT& cdt) {
+    Point p1 = face->vertex(0)->point();
+    Point p2 = face->vertex(1)->point();
+    Point p3 = face->vertex(2)->point();
+ 
+    // Calculate the three angles of the triangle using CGAL::angle
+    if (CGAL::angle(p2, p1, p3) == CGAL::OBTUSE || CGAL::angle(p1, p2, p3) == CGAL::OBTUSE || CGAL::angle(p1, p3, p2) == CGAL::OBTUSE) {
+        return true;
+    }
+    return false;
+}
 
+void steinerCircumcenterCentroid(CDT::Face_handle face, CDT& cdt, TriangulationData &data) {
+    Point p1 = face->vertex(0)->point();
+    Point p2 = face->vertex(1)->point();
+    Point p3 = face->vertex(2)->point();
+    Point circumcenterPoint = CGAL::circumcenter( p1, p2, p3);
+
+    Triangle triangulate = cdt.triangle(face);
+
+    //check if circumcenterPoint is inside the triangle
+    if (triangulate.bounded_side(circumcenterPoint) == CGAL::ON_BOUNDED_SIDE) {
+        cdt.insert(circumcenterPoint);
+        data.steiner_points.push_back(circumcenterPoint);
+        return;
+    }
+    
+    // if circumcenterPoint is outside the triangle
+    Point centroidPoint = CGAL::centroid( p1, p2, p3);
+    cdt.insert(centroidPoint);
+    data.steiner_points.push_back(centroidPoint);
+}
+
+void steinerMedian(CDT::Face_handle face, CDT& cdt, TriangulationData &data) {
+    Point p1 = face->vertex(0)->point();
+    Point p2 = face->vertex(1)->point();
+    Point p3 = face->vertex(2)->point();
+    Point p4;
+    Point p5;
+
+    if (CGAL::angle( p2, p1, p3) == CGAL::OBTUSE) {
+        p4 = p2;
+        p5 = p3;   
+    }
+    else if (CGAL::angle(p1, p2, p3) == CGAL::OBTUSE) {
+        p4 = p1;
+        p5 = p3;
+    }
+    else if (CGAL::angle(p1, p3, p2) == CGAL::OBTUSE) {
+        p4 = p1;
+        p5 = p2;
+    }
+
+    Point medianPoint = CGAL::midpoint( p4, p5);
+    cdt.insert(medianPoint);
+    data.steiner_points.push_back(medianPoint);
+}
+
+void steinerProjection(CDT::Face_handle face, CDT& cdt, TriangulationData &data) {
+    Point p1 = face->vertex(0)->point();
+    Point p2 = face->vertex(1)->point();
+    Point p3 = face->vertex(2)->point();
+    Point p4, p5, p6;
+
+    //p6 is the obtuse angle
+
+    if (CGAL::angle( p2, p1, p3) == CGAL::OBTUSE) {
+        p4 = p2;
+        p5 = p3;   
+        p6 = p1;
+    }
+    else if (CGAL::angle(p1, p2, p3) == CGAL::OBTUSE) {
+        p4 = p1;
+        p5 = p3;
+        p6 = p2;
+    }
+    else if (CGAL::angle(p1, p3, p2) == CGAL::OBTUSE) {
+        p4 = p1;
+        p5 = p2;
+        p6 = p3;
+    }
+
+    //projection of the obtuse angle
+    K::Line_2 line( p4, p5);
+    Point projectionPoint = line.projection(p6);
+
+    cdt.insert(projectionPoint);
+    data.steiner_points.push_back(projectionPoint);
+}

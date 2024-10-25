@@ -16,6 +16,14 @@ typedef CGAL::Exact_predicates_tag Itag;
 typedef Custom_Constrained_Delaunay_triangulation_2<K, CGAL::Default, Itag> CDT;
 typedef CDT::Point Point;
 
+typedef CDT::Triangle Triangle;
+typedef K::Line_2 Line_2;
+
+struct TriangulationData {
+    vector<Point> steiner_points;
+    vector<pair<Point, Point>> edges;
+};
+
 class InputData {
 private:
     string instance_uid_;
@@ -82,8 +90,17 @@ public:
 // Declaration of additional utility functions
 InputData readJsonFile(const string& filename);
 int countObtuseAngles(const CDT& cdt);
-void performEdgeFlips(CDT& cdt);
+
+// Flip Functions
 bool shouldFlip(CDT::Face_handle face, int edge_index, const CDT& cdt);
 void performEdgeFlips(CDT& cdt);
+
+// Steiner Function
+
+bool obtuseFace(CDT::Face_handle face, const CDT& cdt);
+
+void steinerCircumcenterCentroid(CDT::Face_handle face, CDT& cdt, TriangulationData &data);
+void steinerMedian(CDT::Face_handle face, CDT& cdt, TriangulationData &data);
+void steinerProjection(CDT::Face_handle face, CDT& cdt, TriangulationData &data);
 
 #endif // UTILS_HPP
