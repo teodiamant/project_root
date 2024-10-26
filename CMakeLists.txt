@@ -28,6 +28,13 @@ add_subdirectory(includes/graphics)
 # Create the executable target
 add_executable(project_root ex.cpp)
 
+# Include directories for custom and other headers
+target_include_directories(project_root PRIVATE
+  includes/custom
+  includes/utils
+  includes/graphics
+)
+
 # Link to the utils and graphics libraries and the external libraries
 target_link_libraries(project_root utils graphics CGAL::CGAL ${Boost_LIBRARIES})
 

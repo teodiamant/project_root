@@ -102,5 +102,6 @@ bool obtuseFace(CDT::Face_handle face, const CDT& cdt);
 void steinerCircumcenterCentroid(CDT::Face_handle face, CDT& cdt, TriangulationData &data);
 void steinerMedian(CDT::Face_handle face, CDT& cdt, TriangulationData &data);
 void steinerProjection(CDT::Face_handle face, CDT& cdt, TriangulationData &data);
+//void centroidPolygon(CDT::Face_handle face, CDT& cdt, TriangulationData &data);
 
 #endif // UTILS_HPP

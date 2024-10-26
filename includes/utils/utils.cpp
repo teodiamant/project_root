@@ -207,6 +207,9 @@ void steinerMedian(CDT::Face_handle face, CDT& cdt, TriangulationData &data) {
         p4 = p1;
         p5 = p2;
     }
+    else {
+        return;
+    }
 
     Point medianPoint = CGAL::midpoint( p4, p5);
     cdt.insert(medianPoint);
@@ -224,7 +227,7 @@ void steinerProjection(CDT::Face_handle face, CDT& cdt, TriangulationData &data)
     if (CGAL::angle( p2, p1, p3) == CGAL::OBTUSE) {
         p4 = p2;
         p5 = p3;   
-        p6 = p1;
+        p6 = p1;    
     }
     else if (CGAL::angle(p1, p2, p3) == CGAL::OBTUSE) {
         p4 = p1;
@@ -236,6 +239,9 @@ void steinerProjection(CDT::Face_handle face, CDT& cdt, TriangulationData &data)
         p5 = p2;
         p6 = p3;
     }
+    else {
+        return;
+    }
 
     //projection of the obtuse angle
     K::Line_2 line( p4, p5);
@@ -244,3 +250,5 @@ void steinerProjection(CDT::Face_handle face, CDT& cdt, TriangulationData &data)
     cdt.insert(projectionPoint);
     data.steiner_points.push_back(projectionPoint);
 }
+
+//void centroidPolygon(CDT::Face_handle face, CDT& cdt, TriangulationData &data) { }

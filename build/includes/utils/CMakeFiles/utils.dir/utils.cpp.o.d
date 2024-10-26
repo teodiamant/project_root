@@ -626,7 +626,19 @@ includes/utils/CMakeFiles/utils.dir/utils.cpp.o: \
  /usr/local/include/CGAL/Real_embeddable_traits.h \
  /usr/local/include/CGAL/Fraction_traits.h \
  /usr/local/include/CGAL/Rational_traits.h \
- /usr/local/include/CGAL/is_convertible.h \
+ /usr/local/include/CGAL/is_convertible.h /usr/include/gmpxx.h \
+ /usr/include/c++/11/cstring /usr/include/string.h /usr/include/strings.h \
+ /usr/include/c++/11/cfloat \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h \
+ /usr/include/x86_64-linux-gnu/gmp.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h \
+ /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/local_lim.h \
+ /usr/include/linux/limits.h \
+ /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
  /usr/local/include/CGAL/Scalar_factor_traits.h \
  /usr/local/include/CGAL/Algebraic_extension_traits.h \
  /usr/include/c++/11/numeric /usr/include/c++/11/bits/stl_numeric.h \
@@ -656,8 +668,7 @@ includes/utils/CMakeFiles/utils.dir/utils.cpp.o: \
  /usr/include/c++/11/tr1/poly_laguerre.tcc \
  /usr/include/c++/11/tr1/riemann_zeta.tcc \
  /usr/local/include/CGAL/utils_classes.h /usr/local/include/CGAL/utils.h \
- /usr/local/include/CGAL/FPU.h /usr/include/c++/11/cstring \
- /usr/include/string.h /usr/include/strings.h /usr/include/c++/11/fenv.h \
+ /usr/local/include/CGAL/FPU.h /usr/include/c++/11/fenv.h \
  /usr/include/fenv.h /usr/include/x86_64-linux-gnu/bits/fenv.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/xmmintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/mmintrin.h \
@@ -673,9 +684,14 @@ includes/utils/CMakeFiles/utils.dir/utils.cpp.o: \
  /usr/local/include/boost/operators.hpp /usr/local/include/CGAL/int.h \
  /usr/local/include/CGAL/Modular_traits.h \
  /usr/local/include/CGAL/Modular_arithmetic/Residue_type.h \
- /usr/local/include/CGAL/tss.h /usr/include/c++/11/cfloat \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h \
- /usr/local/include/CGAL/long_long.h \
+ /usr/local/include/CGAL/tss.h /usr/local/include/CGAL/long_long.h \
+ /usr/local/include/CGAL/gmpxx.h /usr/local/include/CGAL/mpz_class.h \
+ /usr/include/mpfr.h /usr/local/include/CGAL/gmpxx_coercion_traits.h \
+ /usr/local/include/CGAL/Residue.h /usr/local/include/CGAL/Quotient.h \
+ /usr/local/include/CGAL/mpq_class.h \
+ /usr/local/include/CGAL/GMPXX_arithmetic_kernel.h \
+ /usr/local/include/CGAL/Arithmetic_kernel/Arithmetic_kernel_base.h \
+ /usr/local/include/CGAL/Get_arithmetic_kernel.h \
  /usr/local/include/CGAL/number_utils_classes.h \
  /usr/local/include/CGAL/kernel_basic.h \
  /usr/local/include/CGAL/kernel_config.h \
@@ -822,14 +838,6 @@ includes/utils/CMakeFiles/utils.dir/utils.cpp.o: \
  /usr/local/include/boost/type_traits/has_trivial_destructor.hpp \
  /usr/local/include/boost/integer/common_factor_ct.hpp \
  /usr/local/include/boost/integer_fwd.hpp /usr/include/c++/11/climits \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h \
- /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
- /usr/include/x86_64-linux-gnu/bits/local_lim.h \
- /usr/include/linux/limits.h \
- /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
- /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
- /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
  /usr/local/include/boost/limits.hpp \
  /usr/local/include/boost/type_traits/aligned_storage.hpp \
  /usr/local/include/boost/type_traits/alignment_of.hpp \
@@ -1583,7 +1591,6 @@ includes/utils/CMakeFiles/utils.dir/utils.cpp.o: \
  /usr/local/include/CGAL/Homogeneous/PointH2.h \
  /usr/local/include/CGAL/Homogeneous/VectorH2.h \
  /usr/local/include/CGAL/Kernel_d/Cartesian_const_iterator_d.h \
- /usr/local/include/CGAL/Quotient.h \
  /usr/local/include/CGAL/Homogeneous/predicates_on_pointsH2.h \
  /usr/local/include/CGAL/Homogeneous/Iso_rectangleH2.h \
  /usr/local/include/CGAL/Homogeneous/LineH2.h \
@@ -1616,7 +1623,6 @@ includes/utils/CMakeFiles/utils.dir/utils.cpp.o: \
  /usr/local/include/CGAL/Sqrt_extension/Fraction_traits.h \
  /usr/local/include/CGAL/Sqrt_extension/Coercion_traits.h \
  /usr/local/include/CGAL/Sqrt_extension/Modular_traits.h \
- /usr/local/include/CGAL/Residue.h \
  /usr/local/include/CGAL/Sqrt_extension/Scalar_factor_traits.h \
  /usr/local/include/CGAL/Sqrt_extension/Algebraic_extension_traits.h \
  /usr/local/include/CGAL/Sqrt_extension/Chinese_remainder_traits.h \
@@ -1624,7 +1630,6 @@ includes/utils/CMakeFiles/utils.dir/utils.cpp.o: \
  /usr/local/include/CGAL/extended_euclidean_algorithm.h \
  /usr/local/include/CGAL/Sqrt_extension/io.h \
  /usr/local/include/CGAL/Sqrt_extension/Get_arithmetic_kernel.h \
- /usr/local/include/CGAL/Get_arithmetic_kernel.h \
  /usr/local/include/CGAL/Sqrt_extension/convert_to_bfi.h \
  /usr/local/include/CGAL/convert_to_bfi.h /usr/local/include/CGAL/Cache.h \
  /usr/local/include/CGAL/function_objects.h \
@@ -1632,7 +1637,6 @@ includes/utils/CMakeFiles/utils.dir/utils.cpp.o: \
  /usr/local/include/CGAL/Sqrt_extension/Eigen_NumTraits.h \
  /usr/local/include/CGAL/MP_Float_impl.h \
  /usr/local/include/CGAL/MP_Float_arithmetic_kernel.h \
- /usr/local/include/CGAL/Arithmetic_kernel/Arithmetic_kernel_base.h \
  /usr/local/include/CGAL/Lazy_exact_nt.h /usr/local/include/CGAL/Handle.h \
  /usr/local/include/CGAL/Lazy.h /usr/local/include/CGAL/min_max_n.h \
  /usr/local/include/CGAL/Default.h \
@@ -1860,7 +1864,6 @@ includes/utils/CMakeFiles/utils.dir/utils.cpp.o: \
  /usr/local/include/boost/math/special_functions/detail/gamma_inva.hpp \
  /usr/local/include/boost/math/special_functions/erf.hpp \
  /usr/local/include/boost/math/special_functions/detail/erf_inv.hpp \
- /usr/include/x86_64-linux-gnu/gmp.h /usr/include/mpfr.h \
  /usr/local/include/CGAL/BOOST_MP_arithmetic_kernel.h \
  /usr/local/include/CGAL/cpp_float.h /usr/local/include/CGAL/Gmpz.h \
  /usr/local/include/CGAL/Gmp_coercion_traits.h \
@@ -1965,6 +1968,7 @@ includes/utils/CMakeFiles/utils.dir/utils.cpp.o: \
  /usr/local/include/CGAL/Converting_construction.h \
  /usr/local/include/CGAL/Cartesian/Is_trivial_construction.h \
  /usr/local/include/CGAL/Triangulation_structural_filtering_traits.h \
+ /home/teodiamant/project_root/includes/utils/../../includes/custom/custom.hpp \
  /usr/local/include/CGAL/Constrained_Delaunay_triangulation_2.h \
  /usr/local/include/CGAL/license/Triangulation_2.h \
  /usr/local/include/CGAL/Constrained_triangulation_2.h \

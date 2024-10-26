@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DCGAL_USE_GMPXX=1
 
-CXX_INCLUDES = -I/home/teodiamant/project_root/includes/graphics -I/home/teodiamant/project_root/includes/graphics/../utils
+CXX_INCLUDES = -I/home/teodiamant/project_root/includes/graphics -I/home/teodiamant/project_root/includes/graphics/../../includes/custom -I/home/teodiamant/project_root/includes/graphics/../../includes/utils
 
 CXX_FLAGS = -frounding-math
 
