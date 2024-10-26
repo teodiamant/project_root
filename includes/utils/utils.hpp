@@ -8,6 +8,9 @@
 #include <vector>
 #include <iostream>
 #include <CGAL/Polygon_2.h>
+#include <stack>
+#include <set>
+#include <CGAL/centroid.h>
 
 using namespace std;
 
@@ -19,6 +22,7 @@ typedef CDT::Point Point;
 
 typedef CDT::Triangle Triangle;
 typedef K::Line_2 Line_2;
+typedef CGAL::Polygon_2<K> Polygon_2;
 
 struct TriangulationData {
     vector<Point> steiner_points;

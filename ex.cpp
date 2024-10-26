@@ -6,6 +6,8 @@
 //#include <CGAL/Constrained_Delaunay_triangulation_2.h>
 #include <CGAL/draw_constrained_triangulation_2.h>
 #include <CGAL/Polygon_2.h> 
+#include <stack>
+#include <set>
 
 #include <iostream>
 
@@ -120,6 +122,18 @@ int main() {
                 bestPoint = *tempData.steiner_points.rbegin();
                 pointAdded = true;
                 bestFunction = "Projection";
+            }
+
+            // Δοκιμή Steiner σημείου στο κέντρο βάρους (centroid) του πολυγώνου γειτονικών τριγώνων
+            tempCDT = finalCDT;
+            tempData.steiner_points.clear();
+            centroidPolygon(face, tempCDT, tempData);
+            int obtuseCentroidCount = countObtuseAngles(tempCDT);
+            if (obtuseCentroidCount < currentBestObtuseCount) {
+                currentBestObtuseCount = obtuseCentroidCount;
+                bestPoint = *tempData.steiner_points.rbegin();
+                pointAdded = true;
+                bestFunction = "CentroidPolygon";
             }
 
             // Αν βρέθηκε σημείο που βελτιώνει τον τριγωνισμό, το εισάγουμε

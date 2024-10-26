@@ -2493,6 +2493,16 @@ includes/utils/CMakeFiles/utils.dir/utils.cpp.o: ../includes/utils/utils.cpp \
   /usr/local/include/boost/move/algo/adaptive_sort.hpp \
   /usr/local/include/boost/move/algo/detail/pdqsort.hpp \
   /usr/local/include/boost/intrusive/detail/minimal_less_equal_header.hpp \
+  /usr/local/include/CGAL/Polygon_2.h \
+  /usr/local/include/CGAL/Polygon_2_algorithms.h \
+  /usr/local/include/CGAL/Polygon_2/Polygon_2_algorithms_impl.h \
+  /usr/local/include/CGAL/Polygon_2/Polygon_2_simplicity.h \
+  /usr/local/include/CGAL/Polygon_2/Polygon_2_vertex_circulator.h \
+  /usr/local/include/CGAL/Polygon_2/Polygon_2_edge_iterator.h \
+  /usr/local/include/CGAL/Polygon_2/Polygon_2_edge_circulator.h \
+  /usr/local/include/CGAL/Polygon_2/Polygon_2_impl.h \
+  /usr/local/include/CGAL/centroid.h \
+  /usr/local/include/CGAL/Kernel/Dimension_utils.h \
   /usr/local/include/boost/property_tree/ptree.hpp \
   /usr/local/include/boost/property_tree/ptree_fwd.hpp \
   /usr/local/include/boost/property_tree/string_path.hpp \
@@ -2789,6 +2799,24 @@ includes/utils/CMakeFiles/utils.dir/utils.cpp.o: ../includes/utils/utils.cpp \
 
 /usr/local/include/boost/property_tree/ptree.hpp:
 
+/usr/local/include/CGAL/Kernel/Dimension_utils.h:
+
+/usr/local/include/CGAL/Polygon_2/Polygon_2_impl.h:
+
+/usr/local/include/CGAL/Polygon_2/Polygon_2_edge_circulator.h:
+
+/usr/local/include/CGAL/Polygon_2/Polygon_2_edge_iterator.h:
+
+/usr/local/include/CGAL/Polygon_2/Polygon_2_vertex_circulator.h:
+
+/usr/local/include/CGAL/Polygon_2/Polygon_2_simplicity.h:
+
+/usr/local/include/CGAL/Polygon_2/Polygon_2_algorithms_impl.h:
+
+/usr/local/include/CGAL/Polygon_2_algorithms.h:
+
+/usr/local/include/CGAL/Polygon_2.h:
+
 /usr/local/include/boost/intrusive/detail/minimal_less_equal_header.hpp:
 
 /usr/local/include/boost/move/algo/detail/pdqsort.hpp:
@@ -3000,6 +3028,8 @@ includes/utils/CMakeFiles/utils.dir/utils.cpp.o: ../includes/utils/utils.cpp \
 /usr/local/include/boost/math/special_functions/cos_pi.hpp:
 
 /usr/local/include/boost/predef/hardware/simd/arm/versions.h:
+
+/usr/local/include/CGAL/centroid.h:
 
 /usr/include/c++/11/ext/string_conversions.h:
 

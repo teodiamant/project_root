@@ -2499,4 +2499,14 @@ includes/graphics/CMakeFiles/graphics.dir/graphics.cpp.o
  /usr/local/include/CGAL/license/GraphicsView.h
  /usr/local/include/CGAL/Triangulation_2/internal/In_domain.h
  /home/teodiamant/project_root/includes/utils/utils.hpp
+ /usr/local/include/CGAL/Polygon_2.h
+ /usr/local/include/CGAL/Polygon_2_algorithms.h
+ /usr/local/include/CGAL/Polygon_2/Polygon_2_algorithms_impl.h
+ /usr/local/include/CGAL/Polygon_2/Polygon_2_simplicity.h
+ /usr/local/include/CGAL/Polygon_2/Polygon_2_vertex_circulator.h
+ /usr/local/include/CGAL/Polygon_2/Polygon_2_edge_iterator.h
+ /usr/local/include/CGAL/Polygon_2/Polygon_2_edge_circulator.h
+ /usr/local/include/CGAL/Polygon_2/Polygon_2_impl.h
+ /usr/local/include/CGAL/centroid.h
+ /usr/local/include/CGAL/Kernel/Dimension_utils.h
 

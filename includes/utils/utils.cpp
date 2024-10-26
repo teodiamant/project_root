@@ -156,6 +156,7 @@ void performEdgeFlips(CDT& cdt) {
 }
 
 bool obtuseFace(CDT::Face_handle face, const CDT& cdt) {
+    
     Point p1 = face->vertex(0)->point();
     Point p2 = face->vertex(1)->point();
     Point p3 = face->vertex(2)->point();
@@ -252,7 +253,55 @@ void steinerProjection(CDT::Face_handle face, CDT& cdt, TriangulationData &data)
 }
 
 void centroidPolygon(CDT::Face_handle face, CDT& cdt, TriangulationData &data) {
+    set<CDT::Face_handle> obtuse_faces; // Σύνολο για την αποθήκευση των γειτονικών τριγώνων με αμβλεία γωνία
+    CGAL::Polygon_2<K> polygon; // Πολύγωνο για τις εξωτερικές κορυφές
 
+    // 1. Συλλέγουμε τα γειτονικά τρίγωνα με αμβλείες γωνίες
+    stack<CDT::Face_handle> face_stack;
+    face_stack.push(face);
+    obtuse_faces.insert(face);
+
+    while (!face_stack.empty()) {
+        CDT::Face_handle current_face = face_stack.top();
+        face_stack.pop();
+
+        // Διατρέχουμε τα γειτονικά τρίγωνα
+        for (int i = 0; i < 3; ++i) {
+            CDT::Face_handle neighbor = current_face->neighbor(i);
+
+            // Αν το γειτονικό τρίγωνο είναι αμβλείας γωνίας και δεν έχει ήδη εξεταστεί
+            if (!cdt.is_infinite(neighbor) && obtuseFace(neighbor, cdt) && obtuse_faces.find(neighbor) == obtuse_faces.end()) {
+                obtuse_faces.insert(neighbor);
+                face_stack.push(neighbor);
+            }
+        }
+    }
+
+    // 2. Δημιουργούμε το περίγραμμα του πολυγώνου χρησιμοποιώντας τις εξωτερικές ακμές
+    for (const auto& obtuse_face : obtuse_faces) {
+        for (int i = 0; i < 3; ++i) {
+            CDT::Face_handle neighbor = obtuse_face->neighbor(i);
+
+            // Αν η ακμή είναι εξωτερική, προσθέτουμε τις κορυφές της στο πολύγωνο
+            if (obtuse_faces.find(neighbor) == obtuse_faces.end()) {
+                Point p1 = obtuse_face->vertex((i + 1) % 3)->point();
+                Point p2 = obtuse_face->vertex((i + 2) % 3)->point();
+
+                // Προσθέτουμε τις εξωτερικές κορυφές στο Polygon_2
+                if (polygon.is_empty() || polygon.vertices_end()[-1] != p1)
+                    polygon.push_back(p1);
+                if (polygon.vertices_end()[-1] != p2)
+                    polygon.push_back(p2);
+            }
+        }
+    }
+
+    // 3. Υπολογισμός του κέντρου βάρους του πολυγώνου
+    auto centroid = CGAL::centroid(polygon.vertices_begin(), polygon.vertices_end());
+
+    // Εισαγωγή του σημείου κέντρου βάρους στον τριγωνισμό ως σημείο Steiner
+    cdt.insert(centroid);
+    data.steiner_points.push_back(centroid); // Αποθήκευση του σημείου στο TriangulationData
 }
 
 void writeJsonOutput(const string& output_filename, const string& instance_uid, const vector<Point>& steiner_points, const CDT& finalCDT) {

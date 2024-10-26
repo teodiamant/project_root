@@ -2497,8 +2497,36 @@ includes/graphics/CMakeFiles/graphics.dir/graphics.cpp.o: ../includes/graphics/g
   /usr/local/include/CGAL/Qt/Basic_viewer_qt.h \
   /usr/local/include/CGAL/license/GraphicsView.h \
   /usr/local/include/CGAL/Triangulation_2/internal/In_domain.h \
-  ../includes/utils/utils.hpp
+  ../includes/utils/utils.hpp \
+  /usr/local/include/CGAL/Polygon_2.h \
+  /usr/local/include/CGAL/Polygon_2_algorithms.h \
+  /usr/local/include/CGAL/Polygon_2/Polygon_2_algorithms_impl.h \
+  /usr/local/include/CGAL/Polygon_2/Polygon_2_simplicity.h \
+  /usr/local/include/CGAL/Polygon_2/Polygon_2_vertex_circulator.h \
+  /usr/local/include/CGAL/Polygon_2/Polygon_2_edge_iterator.h \
+  /usr/local/include/CGAL/Polygon_2/Polygon_2_edge_circulator.h \
+  /usr/local/include/CGAL/Polygon_2/Polygon_2_impl.h \
+  /usr/local/include/CGAL/centroid.h \
+  /usr/local/include/CGAL/Kernel/Dimension_utils.h
 
+
+/usr/local/include/CGAL/Kernel/Dimension_utils.h:
+
+/usr/local/include/CGAL/Polygon_2/Polygon_2_impl.h:
+
+/usr/local/include/CGAL/Polygon_2/Polygon_2_edge_circulator.h:
+
+/usr/local/include/CGAL/Polygon_2/Polygon_2_edge_iterator.h:
+
+/usr/local/include/CGAL/Polygon_2/Polygon_2_vertex_circulator.h:
+
+/usr/local/include/CGAL/Polygon_2/Polygon_2_simplicity.h:
+
+/usr/local/include/CGAL/Polygon_2/Polygon_2_algorithms_impl.h:
+
+/usr/local/include/CGAL/Polygon_2_algorithms.h:
+
+/usr/local/include/CGAL/Polygon_2.h:
 
 ../includes/utils/utils.hpp:
 
@@ -2703,6 +2731,8 @@ includes/graphics/CMakeFiles/graphics.dir/graphics.cpp.o: ../includes/graphics/g
 /usr/local/include/boost/math/special_functions/cos_pi.hpp:
 
 /usr/local/include/boost/predef/hardware/simd/arm/versions.h:
+
+/usr/local/include/CGAL/centroid.h:
 
 /usr/include/c++/11/ext/string_conversions.h:
 

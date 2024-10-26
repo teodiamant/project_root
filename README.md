@@ -11,4 +11,4 @@ Compilation Instructions:
     2)add the instance you want to test in the "instance_datajson.json" file which 
     is in the "build" directory
     3)the program draws the shape of the CDT and create the file "solution_output.json"
-    which contains the requested information 
+    which contains the requested information
