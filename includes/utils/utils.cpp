@@ -251,7 +251,9 @@ void steinerProjection(CDT::Face_handle face, CDT& cdt, TriangulationData &data)
     data.steiner_points.push_back(projectionPoint);
 }
 
-//void centroidPolygon(CDT::Face_handle face, CDT& cdt, TriangulationData &data) { }
+void centroidPolygon(CDT::Face_handle face, CDT& cdt, TriangulationData &data) {
+
+}
 
 void writeJsonOutput(const string& output_filename, const string& instance_uid, const vector<Point>& steiner_points, const CDT& finalCDT) {
     ptree root;
@@ -296,9 +298,9 @@ void writeJsonOutput(const string& output_filename, const string& instance_uid, 
     root.add_child("edges", edges);
 
     // 5. Αποθήκευση JSON σε string χωρίς εσοχές
-    std::ostringstream oss;
+    ostringstream oss;
     write_json(oss, root, false);  // Το `false` αφαιρεί τις εσοχές
-    std::string json_output = oss.str();
+    string json_output = oss.str();
 
     cout << "Final JSON output written to " << output_filename << endl;
 }

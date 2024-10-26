@@ -1,5 +1,5 @@
 {
-    "instance_uid": "test_6",
+    "instance_uid": "test_4",
     "num_points": 12,
     "points_x": [
         10,
@@ -43,6 +43,11 @@
         6,
         2
     ],
-    "num_constraints": 0,
-    "additional_constraints": []
+    "num_constraints": 1,
+    "additional_constraints": [
+        [
+            0,
+            11
+        ]
+    ]
 }

@@ -15,6 +15,7 @@ typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Exact_predicates_tag Itag;
 typedef Custom_Constrained_Delaunay_triangulation_2<K, CGAL::Default, Itag> CDT;
 typedef CDT::Point Point;
+typedef CGAL::Polygon_2<K> Polygon_2;
 
 int main() {
     // Load the instance data from JSON file
@@ -67,10 +68,11 @@ int main() {
     int bestObtuseCount = countObtuseAngles(finalCDT);
     string bestFunction;
 
+    // Συνεχής βελτίωση μέχρι να μην είναι δυνατή περαιτέρω βελτίωση
     while (improvement) {
         improvement = false;
 
-        // Iterate over all finite faces in the triangulation
+        // Διέλευση από όλα τα πεπερασμένα πρόσωπα για αναζήτηση αμβλέων γωνιών
         for (auto face_iter = finalCDT.finite_faces_begin(); face_iter != finalCDT.finite_faces_end(); ++face_iter) {
             CDT::Face_handle face = face_iter;
 
@@ -78,27 +80,28 @@ int main() {
                 continue;
             }
 
-            // Variables to track the best Steiner point option
+            // Μεταβλητές για την παρακολούθηση της καλύτερης βελτίωσης
             int currentBestObtuseCount = bestObtuseCount;
             Point bestPoint;
             bool pointAdded = false;
+            string bestFunction;
 
-            // Test Steiner point at circumcenter or centroid
-            CDT tempCDT = finalCDT;  // Create a temporary copy of finalCDT
+            // Δοκιμή Steiner σημείου στο circumcenter/centroid
+            CDT tempCDT = finalCDT;
             TriangulationData tempData;
-            steinerCircumcenterCentroid(face, tempCDT, tempData);  // Add Steiner point at circumcenter or centroid
+            steinerCircumcenterCentroid(face, tempCDT, tempData);
             int obtuseCircumcenterCount = countObtuseAngles(tempCDT);
             if (obtuseCircumcenterCount < currentBestObtuseCount) {
                 currentBestObtuseCount = obtuseCircumcenterCount;
-                bestPoint = *tempData.steiner_points.rbegin();  // Get the last added point
+                bestPoint = *tempData.steiner_points.rbegin();
                 pointAdded = true;
                 bestFunction = "Circumcenter/Centroid";
             }
 
-            // Test Steiner point at median
-            tempCDT = finalCDT;  // Reset to original CDT
+            // Δοκιμή Steiner σημείου στο median
+            tempCDT = finalCDT;
             tempData.steiner_points.clear();
-            steinerMedian(face, tempCDT, tempData);  // Add Steiner point at median of the obtuse edge
+            steinerMedian(face, tempCDT, tempData);
             int obtuseMedianCount = countObtuseAngles(tempCDT);
             if (obtuseMedianCount < currentBestObtuseCount) {
                 currentBestObtuseCount = obtuseMedianCount;
@@ -107,10 +110,10 @@ int main() {
                 bestFunction = "Median";
             }
 
-            // Test Steiner point at projection
-            tempCDT = finalCDT;  // Reset to original CDT
+            // Δοκιμή Steiner σημείου στην projection
+            tempCDT = finalCDT;
             tempData.steiner_points.clear();
-            steinerProjection(face, tempCDT, tempData);  // Add Steiner point at the projection of the obtuse vertex
+            steinerProjection(face, tempCDT, tempData);
             int obtuseProjectionCount = countObtuseAngles(tempCDT);
             if (obtuseProjectionCount < currentBestObtuseCount) {
                 currentBestObtuseCount = obtuseProjectionCount;
@@ -118,21 +121,30 @@ int main() {
                 pointAdded = true;
                 bestFunction = "Projection";
             }
-        
-    // Apply the best Steiner point insertion to finalCDT
+
+            // Αν βρέθηκε σημείο που βελτιώνει τον τριγωνισμό, το εισάγουμε
             if (pointAdded && currentBestObtuseCount < bestObtuseCount) {
-                finalCDT.insert(bestPoint);  // Insert the best point found
-                data.steiner_points.push_back(bestPoint);  // Track the inserted Steiner point
+                finalCDT.insert(bestPoint);
+                data.steiner_points.push_back(bestPoint);
                 bestObtuseCount = currentBestObtuseCount;
-                improvement = true;  // Mark that an improvement was made
+                improvement = true;
+                cout << "Improvement with " << bestFunction << ", new obtuse angle count: " << bestObtuseCount << endl;
+
+                // Βγαίνουμε από την επανάληψη `for` για να επανελέγξουμε όλες τις συναρτήσεις στη νέα δομή
+                break;
             }
+        }
+
+        // Αν η βελτίωση παραμένει false μετά από έλεγχο όλων των προσώπων, η επανάληψη σταματά
+        if (!improvement) {
+            cout << "No further improvement is possible." << endl;
+            break;
         }
     }
 
     // Display the final count of obtuse angles after optimization
     int finalObtuseCount = countObtuseAngles(finalCDT);
-    cout << "Final number of obtuse angles after Steiner point insertion: " << finalObtuseCount << endl 
-    << "Function Used: " << bestFunction << endl;
+    cout << "Final number of obtuse angles after Steiner point insertion: " << finalObtuseCount << endl;
 
     // Output the data to a JSON file
     string output_filename = "solution_output.json";

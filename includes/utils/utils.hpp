@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <CGAL/Polygon_2.h>
 
 using namespace std;
 
