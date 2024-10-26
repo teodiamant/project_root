@@ -252,3 +252,53 @@ void steinerProjection(CDT::Face_handle face, CDT& cdt, TriangulationData &data)
 }
 
 //void centroidPolygon(CDT::Face_handle face, CDT& cdt, TriangulationData &data) { }
+
+void writeJsonOutput(const string& output_filename, const string& instance_uid, const vector<Point>& steiner_points, const CDT& finalCDT) {
+    ptree root;
+
+    // 1. Προσθήκη content_type
+    root.put("content_type", "CG_SHOP_2025_Solution");
+
+    // 2. Προσθήκη instance_uid
+    root.put("instance_uid", instance_uid);
+
+    // 3. Δημιουργία των steiner_points_x και steiner_points_y
+    ptree steiner_points_x, steiner_points_y;
+    for (const auto& point : steiner_points) {
+        // Προσθήκη συντεταγμένων ως συμβολοσειρές
+        steiner_points_x.push_back(ptree::value_type("", to_string(point.x())));
+        steiner_points_y.push_back(ptree::value_type("", to_string(point.y())));
+    }
+    root.add_child("steiner_points_x", steiner_points_x);
+    root.add_child("steiner_points_y", steiner_points_y);
+
+    // 4. Δημιουργία edges
+    ptree edges;
+    map<Point, int> point_index;
+    int idx = 0;
+
+    // Δημιουργούμε χάρτη για την εύρεση των δεικτών κάθε σημείου
+    for (auto vertex = finalCDT.finite_vertices_begin(); vertex != finalCDT.finite_vertices_end(); ++vertex) {
+        point_index[vertex->point()] = idx++;
+    }
+
+    // Προσθήκη ακμών ως ζεύγη δεικτών
+    for (auto edge_iter = finalCDT.finite_edges_begin(); edge_iter != finalCDT.finite_edges_end(); ++edge_iter) {
+        CDT::Edge edge = *edge_iter;
+        int idx1 = point_index[edge.first->vertex(edge.second)->point()];
+        int idx2 = point_index[edge.first->vertex((edge.second + 1) % 3)->point()];
+
+        ptree edge_node;
+        edge_node.push_back(ptree::value_type("", to_string(idx1)));
+        edge_node.push_back(ptree::value_type("", to_string(idx2)));
+        edges.push_back(ptree::value_type("", edge_node));
+    }
+    root.add_child("edges", edges);
+
+    // 5. Αποθήκευση JSON σε string χωρίς εσοχές
+    std::ostringstream oss;
+    write_json(oss, root, false);  // Το `false` αφαιρεί τις εσοχές
+    std::string json_output = oss.str();
+
+    cout << "Final JSON output written to " << output_filename << endl;
+}

@@ -133,9 +133,15 @@ int main() {
     int finalObtuseCount = countObtuseAngles(finalCDT);
     cout << "Final number of obtuse angles after Steiner point insertion: " << finalObtuseCount << endl 
     << "Function Used: " << bestFunction << endl;
-    
+
+    // Output the data to a JSON file
+    string output_filename = "solution_output.json";
+    // Ορισμός της λίστας των Steiner points από τη διαδικασία βελτίωσης
+    vector<Point> steiner_points = data.steiner_points;
+    writeJsonOutput(output_filename, instance_data.getInstanceUid(), steiner_points, finalCDT);
+
     // Draw the optimized constrained Delaunay triangulation
     draw(finalCDT);
-
+    
     return 0;
 }

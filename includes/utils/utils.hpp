@@ -102,6 +102,9 @@ bool obtuseFace(CDT::Face_handle face, const CDT& cdt);
 void steinerCircumcenterCentroid(CDT::Face_handle face, CDT& cdt, TriangulationData &data);
 void steinerMedian(CDT::Face_handle face, CDT& cdt, TriangulationData &data);
 void steinerProjection(CDT::Face_handle face, CDT& cdt, TriangulationData &data);
-//void centroidPolygon(CDT::Face_handle face, CDT& cdt, TriangulationData &data);
+void centroidPolygon(CDT::Face_handle face, CDT& cdt, TriangulationData &data);
+
+// Output the data to a JSON file
+void writeJsonOutput(const string& output_filename, const string& instance_uid, const vector<Point>& steiner_points, const CDT& finalCDT);
 
 #endif // UTILS_HPP
