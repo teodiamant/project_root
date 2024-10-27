@@ -2,7 +2,7 @@
 #include <fstream>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
-#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Exact_predicates_exact_constructions_kernel.h>
 #include <CGAL/Constrained_Delaunay_triangulation_2.h>
 
 #include <iostream>
@@ -296,8 +296,16 @@ void centroidPolygon(CDT::Face_handle face, CDT& cdt, TriangulationData &data) {
         }
     }
 
+    if (polygon.size() < 3) {
+        return;
+    }
+
     // 3. Υπολογισμός του κέντρου βάρους του πολυγώνου
     auto centroid = CGAL::centroid(polygon.vertices_begin(), polygon.vertices_end());
+
+    if (cdt.is_infinite(cdt.locate(centroid))){
+        return;
+    }
 
     // Εισαγωγή του σημείου κέντρου βάρους στον τριγωνισμό ως σημείο Steiner
     cdt.insert(centroid);
@@ -316,9 +324,12 @@ void writeJsonOutput(const string& output_filename, const string& instance_uid, 
     // 3. Δημιουργία των steiner_points_x και steiner_points_y
     ptree steiner_points_x, steiner_points_y;
     for (const auto& point : steiner_points) {
+        ostringstream oss_x, oss_y;
+        oss_x << point.x();
+        oss_y << point.y();
         // Προσθήκη συντεταγμένων ως συμβολοσειρές
-        steiner_points_x.push_back(ptree::value_type("", to_string(point.x())));
-        steiner_points_y.push_back(ptree::value_type("", to_string(point.y())));
+        steiner_points_x.push_back(ptree::value_type("", oss_x.str()));
+        steiner_points_y.push_back(ptree::value_type("", oss_y.str()));
     }
     root.add_child("steiner_points_x", steiner_points_x);
     root.add_child("steiner_points_y", steiner_points_y);

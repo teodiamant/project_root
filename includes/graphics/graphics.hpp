@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_HPP
 #define GRAPHICS_HPP
 
-#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Exact_predicates_exact_constructions_kernel.h>
 //#include <CGAL/Constrained_Delaunay_triangulation_2.h>
 #include "custom.hpp"
 #include <CGAL/draw_constrained_triangulation_2.h>
@@ -12,7 +12,7 @@
 
 using namespace std;
 
-typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+typedef CGAL::Exact_predicates_exact_constructions_kernel K;
 typedef CGAL::Exact_predicates_tag Itag;
 typedef Custom_Constrained_Delaunay_triangulation_2<K, CGAL::Default, Itag> CDT;
 typedef CDT::Point Point;
