@@ -11,6 +11,7 @@
 #include <stack>
 #include <set>
 #include <CGAL/centroid.h>
+#include <regex>
 
 using namespace std;
 
@@ -110,6 +111,7 @@ void steinerProjection(CDT::Face_handle face, CDT& cdt, TriangulationData &data)
 void centroidPolygon(CDT::Face_handle face, CDT& cdt, TriangulationData &data);
 
 // Output the data to a JSON file
+string print_rational(const K::FT& coord);
 void writeJsonOutput(const string& output_filename, const string& instance_uid, const vector<Point>& steiner_points, const CDT& finalCDT);
 
 #endif // UTILS_HPP

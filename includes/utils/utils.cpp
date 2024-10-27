@@ -312,55 +312,83 @@ void centroidPolygon(CDT::Face_handle face, CDT& cdt, TriangulationData &data) {
     data.steiner_points.push_back(centroid); // Αποθήκευση του σημείου στο TriangulationData
 }
 
+    string print_rational(const K::FT& coord) {
+    const auto exact_coord = CGAL::exact(coord);
+    std::ostringstream oss;
+    if (exact_coord.get_den() == 1) {
+        // If the denominator is 1, return only the numerator
+        oss << exact_coord.get_num();
+    } else {
+        // Otherwise, return in the "numerator/denominator" format
+        oss << exact_coord.get_num() << "/" << exact_coord.get_den();
+    }
+    return oss.str();
+}
+
+
 void writeJsonOutput(const string& output_filename, const string& instance_uid, const vector<Point>& steiner_points, const CDT& finalCDT) {
     ptree root;
 
-    // 1. Προσθήκη content_type
+    // 1. Add content_type
     root.put("content_type", "CG_SHOP_2025_Solution");
 
-    // 2. Προσθήκη instance_uid
+    // 2. Add instance_uid
     root.put("instance_uid", instance_uid);
 
-    // 3. Δημιουργία των steiner_points_x και steiner_points_y
+    // 3. Create steiner_points_x and steiner_points_y
     ptree steiner_points_x, steiner_points_y;
     for (const auto& point : steiner_points) {
-        ostringstream oss_x, oss_y;
-        oss_x << point.x();
-        oss_y << point.y();
-        // Προσθήκη συντεταγμένων ως συμβολοσειρές
-        steiner_points_x.push_back(ptree::value_type("", oss_x.str()));
-        steiner_points_y.push_back(ptree::value_type("", oss_y.str()));
+        std::string x_str = print_rational(point.x());
+        std::string y_str = print_rational(point.y());
+
+        steiner_points_x.push_back(ptree::value_type("", x_str));
+        steiner_points_y.push_back(ptree::value_type("", y_str));
     }
     root.add_child("steiner_points_x", steiner_points_x);
     root.add_child("steiner_points_y", steiner_points_y);
 
-    // 4. Δημιουργία edges
+    // 4. Create edges
     ptree edges;
     map<Point, int> point_index;
     int idx = 0;
 
-    // Δημιουργούμε χάρτη για την εύρεση των δεικτών κάθε σημείου
+    // Create a map to find the index of each point
     for (auto vertex = finalCDT.finite_vertices_begin(); vertex != finalCDT.finite_vertices_end(); ++vertex) {
         point_index[vertex->point()] = idx++;
     }
 
-    // Προσθήκη ακμών ως ζεύγη δεικτών
+    // Add edges as pairs of indices
     for (auto edge_iter = finalCDT.finite_edges_begin(); edge_iter != finalCDT.finite_edges_end(); ++edge_iter) {
         CDT::Edge edge = *edge_iter;
         int idx1 = point_index[edge.first->vertex(edge.second)->point()];
         int idx2 = point_index[edge.first->vertex((edge.second + 1) % 3)->point()];
 
         ptree edge_node;
-        edge_node.push_back(ptree::value_type("", to_string(idx1)));
-        edge_node.push_back(ptree::value_type("", to_string(idx2)));
+        edge_node.push_back(ptree::value_type("", std::to_string(idx1)));
+        edge_node.push_back(ptree::value_type("", std::to_string(idx2)));
         edges.push_back(ptree::value_type("", edge_node));
     }
     root.add_child("edges", edges);
 
-    // 5. Αποθήκευση JSON σε string χωρίς εσοχές
-    ostringstream oss;
-    write_json(oss, root, false);  // Το `false` αφαιρεί τις εσοχές
-    string json_output = oss.str();
+    // Write JSON to an ostringstream with indentation
+    std::ostringstream oss;
+    write_json(oss, root, true);  // Write with indentation to the string stream
+    std::string json_output = oss.str();
+
+    // Replace escaped slashes (\/) with plain slashes (/)
+    size_t pos = 0;
+    while ((pos = json_output.find("\\/", pos)) != std::string::npos) {
+        json_output.replace(pos, 2, "/");
+        pos += 1; // Move past the newly replaced character
+    }
+
+    // Save formatted JSON to a file
+    std::ofstream json_file(output_filename);
+    json_file << json_output;  // Write without unnecessary escaping
+    json_file.close();
+
+    // Print formatted JSON to cout
+    //cout << json_output << endl;
 
     cout << "Final JSON output written to " << output_filename << endl;
 }
